@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rubik's Cube Practice</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #f1f1f1;
+            text-align: center;
+            padding: 20px;
+        }
+        button {
+            background-color: #66fcf1;
+            color: #121212;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        button:hover {
+            background-color: #45a29e;
+        }
+        .output {
+            margin: 20px;
+            padding: 10px;
+            border: 1px solid #66fcf1;
+        }
+    </style>
+</head>
+<body>
+    <h1>Rubik's Cube Practice</h1>
+    <p>Choose an option to get started:</p>
+
+    <button onclick="raceRobot()">Race the Rubik's Robot</button>
+    <button onclick="practiceScrambles()">Practice Scrambles</button>
+    <button onclick="practicePLL()">Practice PLL</button>
+    <button onclick="practiceOLL()">Practice OLL</button>
+
+    <div id="output" class="output"></div>
+
+    <script>
+        function generateScramble(moves = 20) {
+            const faces = ['R', 'L', 'U', 'D', 'F', 'B'];
+            const modifiers = ['', "'", '2'];
+            let scramble = [];
+
+            for (let i = 0; i < moves; i++) {
+                let move;
+                do {
+                    move = faces[Math.floor(Math.random() * faces.length)] + modifiers[Math.floor(Math.random() * modifiers.length)];
+                } while (scramble.length > 0 && scramble[scramble.length - 1][0] === move[0]);
+                scramble.push(move);
+            }
+
+            return scramble.join(' ');
+        }
+
+        function raceRobot() {
+            const avg = parseFloat(prompt("What do you average (in seconds)?"));
+            if (isNaN(avg) || avg <= 0) {
+                alert("Invalid input. Please enter a valid number.");
+                return;
+            }
+
+            let output = `<h2>Race the Rubik's Robot</h2>`;
+            for (let i = 1; i <= 5; i++) {
+                const scramble = generateScramble();
+                const robotTime = (avg - 5 + Math.random() * 10).toFixed(2);
+                const userTime = parseFloat(prompt(`Scramble ${i}: ${scramble}\nYour time for scramble ${i} (in seconds):`));
+
+                if (isNaN(userTime)) {
+                    alert("Invalid input. Try again.");
+                    return;
+                }
+
+                output += `<p>Scramble ${i}: ${scramble}</p>`;
+                output += `<p>Robot Time: ${robotTime} seconds</p>`;
+                output += `<p>Your Time: ${userTime} seconds</p>`;
+                if (userTime < robotTime) {
+                    output += `<p><strong>You win!</strong></p>`;
+                } else if (userTime === parseFloat(robotTime)) {
+                    output += `<p><strong>You tied!</strong></p>`;
+                } else {
+                    output += `<p><strong>You lost!</strong></p>`;
+                }
+                output += '<hr>';
+            }
+
+            document.getElementById('output').innerHTML = output;
+        }
+
+        function practiceScrambles() {
+            let numSolves = parseInt(prompt("How many solves do you want to practice?"));
+            if (isNaN(numSolves) || numSolves <= 0) {
+                alert("Invalid input. Please enter a valid number.");
+                return;
+            }
+
+            let total = 0;
+            let output = `<h2>Practice Scrambles</h2>`;
+
+            for (let i = 1; i <= numSolves; i++) {
+                const scramble = generateScramble();
+                const time = parseFloat(prompt(`Scramble ${i}: ${scramble}\nEnter your time (in seconds):`));
+                if (isNaN(time) || time <= 0) {
+                    alert("Invalid input. Try again.");
+                    return;
+                }
+
+                total += time;
+                output += `<p>Scramble ${i}: ${scramble}</p>`;
+                output += `<p>Your Time: ${time} seconds</p>`;
+                output += '<hr>';
+            }
+
+            const mean = (total / numSolves).toFixed(2);
+            output += `<p><strong>Average Time:</strong> ${mean} seconds</p>`;
+            document.getElementById('output').innerHTML = output;
+        }
+
+        function practicePLL() {
+            const pllAlgorithms = {
+                "Ua": "R2 U R U R' U' R' U' R' U R'",
+                "Ub": "R U' R U R U R U' R' U' R2",
+                "H": "M2 U M2 U2 M2 U M2",
+                "Z": "M2 U M2 U M' U2 M2 U2 M' U2",
+                // Add more PLL algorithms as needed
+            };
+
+            let output = `<h2>Practice PLL</h2>`;
+            let total = 0;
+            let count = 0;
+
+            for (const [caseName, algorithm] of Object.entries(pllAlgorithms)) {
+                const time = parseFloat(prompt(`PLL Case: ${caseName}\nAlgorithm: ${algorithm}\nEnter your time (in seconds):`));
+                if (isNaN(time) || time <= 0) {
+                    alert("Invalid input. Try again.");
+                    return;
+                }
+
+                total += time;
+                count++;
+                output += `<p>PLL Case: ${caseName}</p>`;
+                output += `<p>Algorithm: ${algorithm}</p>`;
+                output += `<p>Your Time: ${time} seconds</p>`;
+                output += '<hr>';
+            }
+
+            const average = (total / count).toFixed(2);
+            output += `<p><strong>Average PLL Time:</strong> ${average} seconds</p>`;
+            document.getElementById('output').innerHTML = output;
+        }
+
+        function practiceOLL() {
+            const ollAlgorithms = {
+                "OLL 1": "R U2 R2 F R F' U2 R' F R F'",
+                "OLL 2": "r U r' U2 r U2 R' U2 R U' r'",
+                "OLL 3": "R U R' U R U' B U' B' R'",
+                // Add more OLL algorithms as needed
+            };
+
+            let output = `<h2>Practice OLL</h2>`;
+            let total = 0;
+            let count = 0;
+
+            for (const [caseName, algorithm] of Object.entries(ollAlgorithms)) {
+                const time = parseFloat(prompt(`OLL Case: ${caseName}\nAlgorithm: ${algorithm}\nEnter your time (in seconds):`));
+                if (isNaN(time) || time <= 0) {
+                    alert("Invalid input. Try again.");
+                    return;
+                }
+
+                total += time;
+                count++;
+                output += `<p>OLL Case: ${caseName}</p>`;
+                output += `<p>Algorithm: ${algorithm}</p>`;
+                output += `<p>Your Time: ${time} seconds</p>`;
+                output += '<hr>';
+            }
+
+            const average = (total / count).toFixed(2);
+            output += `<p><strong>Average OLL Time:</strong> ${average} seconds</p>`;
+            document.getElementById('output').innerHTML = output;
+        }
+    </script>
+</body>
+</html>
