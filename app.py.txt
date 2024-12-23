@@ -1,0 +1,11 @@
+import streamlit as st
+
+
+
+st.set_page_config(page_title="fast cubers", page_icon= ":tada:", layout="wide")
+
+
+st.subheader("Hi, I an rubiks cube god :wave:")
+st.title("A cuber from cubing world")
+st.write("I am passionte of teaching people how to get fast at rubiks cube")
+st.write("[learnmore>](https://www.youtube.com/@procuber8465)")
