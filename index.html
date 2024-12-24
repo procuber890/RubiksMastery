@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rubik's Cube Timer</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #66fcf1;
+            font-family: Arial, sans-serif;
+        }
+
+        h1, h2 {
+            color: #66fcf1;
+        }
+
+        button {
+            background-color: #ff0000;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #00ff00;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .option {
+            margin: 20px 0;
+        }
+
+        .summary {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Rubik's Cube Timer</h1>
+        <p>Welcome to the Rubik's Cube Timer! Select an option to get started:</p>
+        <div class="option">
+            <button id="option1" onclick="raceRubiksRobot()">Race the Rubik's robot</button>
+        </div>
+        <div class="option">
+            <button id="option2" onclick="practiceSolves()">Just practice</button>
+        </div>
+        <div class="option">
+            <button id="option3" onclick="practicePLLs()">Practice PLL</button>
+        </div>
+        <div class="option">
+            <button id="option4" onclick="practiceOLLs()">Practice OLL</button>
+        </div>
+        <div class="option">
+            <button id="option5" onclick="exit()">Exit</button>
+        </div>
+    </div>
+
+    <script>
+        function raceRubiksRobot() {
+            alert("Race the Rubik's robot selected. The robot's time will be randomized around your average time.");
+        }
+
+        function practiceSolves() {
+            let navg = parseInt(prompt("How many solves do you want to do?"));
+            let solves = 0;
+            let totaltime = 0;
+            while (solves < navg) {
+                solves++;
+                alert("Scramble: " + generateScramble());
+                let asktime = parseFloat(prompt("What is your time (in seconds)?"));
+                totaltime += asktime;
+            }
+            let mean = totaltime / navg;
+            alert("Average solve time: " + mean.toFixed(2) + " seconds");
+        }
+
+        function practicePLLs() {
+            alert("Practice PLL selected. Go through each PLL case, enter your solve times, and track your progress.");
+        }
+
+        function practiceOLLs() {
+            alert("Practice OLL selected. Go through each OLL case, enter your solve times, and track your progress.");
+        }
+
+        function exit() {
+            alert("Goodbye! Happy cubing!");
+        }
+
+        function generateScramble(moves = 20) {
+            let faces = ['R', 'L', 'U', 'D', 'F', 'B'];
+            let modifiers = ['', "'", '2'];
+            let scramble = [];
+
+            for (let i = 0; i < moves; i++) {
+                let move;
+                do {
+                    move = faces[Math.floor(Math.random() * faces.length)] + modifiers[Math.floor(Math.random() * modifiers.length)];
+                } while (scramble.length > 0 && scramble[scramble.length - 1][0] === move[0]);
+                scramble.push(move);
+            }
+
+            return scramble.join(' ');
+        }
+    </script>
+</body>
+</html>
+
